@@ -1,0 +1,19 @@
+#! /bin/bash
+
+user_lib="/usr/lib"
+user_include="/usr/include"
+user_local="/usr/local"
+
+sudo rm "$user_lib"/ikpFlac.so
+sudo rm "$user_lib"/ikpMP3.so
+sudo rm "$user_lib"/libIrrKlang.so
+sudo rm "$user_lib"/libIrrlicht.a
+sudo rm "$user_lib"/libIrrlicht.so
+sudo rm "$user_lib"/libIrrlicht.so.1.8
+sudo rm "$user_lib"/libIrrlicht.so.1.8.4
+
+sudo rm -r "$user_include"/irrlicht
+sudo rm -r "$user_include"/irrklang
+
+sudo rm "$user_local"/bin/bomberman
+sudo rm -rf "$user_local"/share/bomberman

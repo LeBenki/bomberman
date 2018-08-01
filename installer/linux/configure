@@ -1,0 +1,45 @@
+#! /bin/bash
+
+function get_os_type {
+	which zypper &> /dev/null && os="opensuse"
+	which pacman &> /dev/null && os="archlinux"
+	which dnf &> /dev/null && os="fedora"
+	which apt-get &> /dev/null && os="debian"
+	which emerge &> /dev/null && os="gentoo"
+}
+
+os="void"
+get_os_type
+
+if test "$os" = "void"; then
+		line "#" $C_YELLOW
+		script_header "VOTRE DISTRIBUTION N'EST PAS SUPPORTÉE..."
+		line "#" $C_YELLOW
+		exit 42
+fi
+
+tar zxvf redist.tar.gz
+sudo cp lib/irrlicht/* /usr/lib
+sudo cp lib/irrklang/* /usr/lib
+sudo cp -r include/irrlicht /usr/include
+sudo cp -r include/irrklang /usr/include
+rm -r include
+rm -r lib
+
+user_include="/usr/include"
+
+case "$os" in
+	fedora)
+		sudo yum -y install freeglut freeglut-devel lua lua-devel
+		sudo mkdir "$user_include"/lua5.3
+		sudo cp "$user_include"/lauxlib.h "$user_include"/lua5.3
+		sudo cp "$user_include"/luaconf.h "$user_include"/lua5.3
+		sudo cp "$user_include"/luaconf-x86_64.h "$user_include"/lua5.3
+		sudo cp "$user_include"/lua.h "$user_include"/lua5.3
+		sudo cp "$user_include"/lua.hpp "$user_include"/lua5.3
+		sudo cp "$user_include"/lualib.h "$user_include"/lua5.3
+		;;
+	debian)
+		sudo apt-get -y install freeglut3 freeglut3-dev lua5.3 liblua5.3-dev
+		;;
+esac
